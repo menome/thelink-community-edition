@@ -1,0 +1,12 @@
+<md-card flex class="content-card" ng-cloak layout="row" ng-click="click({groupType:'firstletter', queryStr: card.letter})">
+  <div class="sideAccent md-primary md-hue-2" hide show-gt-sm md-colors="{background: 'primary-700', color: 'primary-500'}"></div>
+  <md-card-title layout="row" style="flex: initial;">
+    <!-- We don't want it to try to flex. -->
+    <md-card-title-text>
+      <span class="md-headline">{{card.letter}}</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content layout="column" layout-align="center center" layout-padding>
+    <p>({{card.count}} cards found for {{card.letter}})</p>
+  </md-card-content>
+</md-card>

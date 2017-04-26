@@ -1,0 +1,11 @@
+PersonId,PersonCode,Email,FirstName,LastName,AlisaName,CellPhone,PhotoUrl,Address,City,PostalCode
+8908f2ba-42b9-11e6-beb8-9e71128cae77,1,vbush@menome.com,Vannevar,Bush,Vannevar,403-123-4568,1.jpg,,,
+8908f544-42b9-11e6-beb8-9e71128cae77,2,jcrlicklider@menome.com,LCR,Licklider,LCR,403-123-4568,2.jpg,,,
+8908f684-42b9-11e6-beb8-9e71128cae77,3,dengelbard@menome.com,Douglas,Engelbart,Doug,403-123-4569,3.jpg,,,
+8908f76a-42b9-11e6-beb8-9e71128cae77,4,tnelson@menome.com,Ted,Nelson,Ted,403-123-4570,4.jpg,,,
+8908fb84-42b9-11e6-beb8-9e71128cae77,5,tbernerslee@menome.com,Tim,Berners-Lee,Tim,403-123-4571,5.jpg,,,
+8908fc74-42b9-11e6-beb8-9e71128cae77,6,akay@menome.com,Alan,Kay,Alan,403-123-4572,6.jpg,,,
+8908fda0-42b9-11e6-beb8-9e71128cae77,7,rdawkins@menome.com,Richard,Dawkins,Richard,403-123-4573,7.jpg,,,
+8908fe9a-42b9-11e6-beb8-9e71128cae77,8,mmorley@menome.com,Mike,Morley,Mimo,403-123-4574,8.jpg,,,
+8908ff76-42b9-11e6-beb8-9e71128cae77,9,kaust@menome.com,Konrad,Aust,Konrad,403-123-4575,9.jpg,,,
+cda2b348-649c-11e6-8b77-86f30ca893d3,10,morleytori@gmail.com,Victoria,Morley,Tori,403-123-4568,10.jpg,,,

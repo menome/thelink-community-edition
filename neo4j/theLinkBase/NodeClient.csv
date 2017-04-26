@@ -1,0 +1,5 @@
+ClientId,Code,FirstName,LastName,Alias,CellPhone,WorkPhone,WorkEmail
+4199dcce-64be-11e6-8b77-86f30ca893d3,1,Ray,Tomlinson,Ray,234-234-2333,403 245 5501,rtomlinson@mit.com
+4199dd96-64be-11e6-8b77-86f30ca893d3,2,Alan,Turing,Alan,123-122-1212,,aturing@princeton.com
+4199e14c-64be-11e6-8b77-86f30ca893d3,3,Ted,Codd,Ted,234-234-2333,,tcodd@ibm.com
+fea2e454-64c9-11e6-8b77-86f30ca893d3,4,Tim,Bray,Tim,234-234-2333,,tbray@amazon.com

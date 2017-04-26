@@ -1,0 +1,82 @@
+= OIL INDUSTRY DATA INTGRATION EXAMPLE: Using Alberta Well And Facility Reports
+:neo4j-version: 3.1
+:author: Mike Morley
+:twitter: @menome.com
+:style: red:Person(name)
+
+// Please use the style & syntax-help outlined here: https://github.com/neo4j-contrib/graphgist/blob/master/gists/syntax.adoc
+// This is also a good example for a GraphGist: https://gist.github.com/jexp/2014efa6448b307c65e9
+
+== Introduction
+
+Alberta provides well and facility report data: A basic model of this is shown below:
+
+image::images/KnowledgeWeb.png[width=600]
+
+The source files for this graph are derived from the Alberta Energy Regulator website: https://www.aer.ca/data-and-publications/statistical-reports/st37
+
+They are also provided in -->theLink<-- : community edition : docker container. A downloadable base graph database is available here: 
+
+== Setup
+
+Some basic pre-processing was required to get the files into an importable state:
+(describe): 
+
+Otherwise, you can download the database directly, unzip it and replace the graph.db folder with the contents. 
+
+
+== EXTRACT DATA TO NEW NODE: Using the graph to parse data out of nodes into new nodes
+
+One of the advantages of the graph database over SQL databases, is that it is very easy to refactor graphs. 
+
+Because the graph is flexible and fluid, it is possible to use graph tools via cypher to create new relationships as they are needed or identified
+quickly. 
+
+In this case, the base graph has no specific information about chemistry assocaited with wells, because the source files don't call those data as a seperate file. The data
+do exist however in the EDCT file: 
+EDCT 
+11	Gas Frac Plant <0.01	Gas fractionating plant - Facilities< 0.01 mol/kmol H2Sin inlet stream
+
+[source,cypher]
+----
+MATCH (a:Person {name: 'Alice'})-[:FRIENDS_WITH]-(:Person)-[:FRIENDS_WITH]-(fof:Person)
+RETURN fof.name as fof, count(*) as frequency
+----
+
+//table
+
+== REPLACEME: SECOND USE-CASE TITLE
+
+// REMOVEME: Describe what this use-case is solving and how the query represents that
+
+// REMOVEME: A Cypher query to with graph output
+
+[source,cypher]
+----
+MATCH path=(a:Person {name: 'Alice'})-[:FRIENDS_WITH]-(:Person)-[:FRIENDS_WITH]-(fof:Person)
+RETURN path, a, fof
+----
+
+//graph_result
+
+////
+// You can also use both graph_result and then table if you return full nodes, relationships or paths
+////
+
+== REPLACEME: THIRD USE-CASE TITLE
+// REMOVEME: add as many use-cases as make sense
+
+// optional section
+== Conclusions
+
+REPLACEME: Offer a conclusion
+
+// optional section
+== Resources
+
+REPLACEME: Link to resorces like data sources, further discussions, 
+
+// optional Footer
+---
+
+Created by {author} - https://twitter.com/{twitter}[Twitter] | http://your.blog.com/[Blog] | https://in.linkedin.com/in/linked-in-handle/[LinkedIn]

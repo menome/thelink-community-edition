@@ -1,0 +1,71 @@
+<md-dialog aria-label="Register for theLink" style="min-width:320px">
+  <form name="reg" novalidate ng-submit="reg.$valid && answer(register)">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Register for theLink</h2>
+        <span flex></span>
+        <md-button class="md-primary md-hue-2 topbar-button" layout="column" layout-align="center center" ng-click="cancel()" aria-label="Grid View">
+          <md-icon md-font-icon="fa-times" class="fa fa-2x"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="column">
+        <h2>Registration</h2>
+        <md-input-container>
+          <label>Email</label>
+          <input name="username" type="email" ng-model="register.username" required ng-pattern="/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+            maxlength="50" />
+          <div ng-messages="reg.username.$error">
+            <div ng-message-exp="['required', 'maxlength', 'pattern']">
+              Please Enter a valid email address.
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Desired Password</label>
+          <input name="passwd" ng-model="register.password" required minlength="5" type="password">
+          <div ng-messages="reg.passwd.$error">
+            <div ng-message-exp="['required', 'minlength']">
+              Your password must be at least 5 characters.
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Confirm Password</label>
+          <input name="passwdconfirm" required ng-model="register.passwordconfirm" type="password" equals="{{register.password}}">
+          <div ng-messages="reg.passwdconfirm.$error">
+            <div ng-message-exp="['required', 'equals']">
+              Passwords must match.
+            </div>
+          </div>
+        </md-input-container>
+        <h3>End User License Agreement</h3>
+        <div class="eula-box" layout-padding>
+          This version of -->theLink
+          <-- is provided for demonstration purposes only. Data presented are subject to change
+            at any time, without warning. Software and user interface are provided as-is and are the property of Menome Technologies
+            Inc. No warranty is provided. </div>
+            <md-input-container>
+              <md-checkbox name="agreetos" layout-align="right center" required="true" ng-model="register.agreetos" aria-label="Remember Me?"
+                ng-init="register.agreetos=true">
+                I accept the End User License Agreement
+              </md-checkbox>
+              <div ng-messages="reg.agreetos.$error" ng-cloak>
+                <div ng-hide="register.agreetos || !reg.agreetos.$dirty">
+                  You must accept the End User License Agreement.
+                </div>
+              </div>
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row" layout-align="end">
+      <md-button ng-click="cancel()">
+        Cancel
+      </md-button>
+      <md-button type="submit" class="md-raised md-primary">
+        Register
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -1,0 +1,594 @@
+swagger: "2.0"
+info:
+  version: "0.1.0"
+  title: theLink API
+# during dev, should point to your local machine
+host: localhost:3050
+# basePath prefixes all resource paths
+basePath: /
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+  - application/x-www-form-urlencoded
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+  - text/html
+tags:
+  - name: Articles
+  - name: Pivot
+  - name: Questions
+  - name: User
+  - name: FullTextSearch
+  - name: MapSearch
+  - name: Dashboard
+  - name: Card
+paths:
+  /api/card:
+    x-swagger-router-controller: card
+    get:
+      operationId: get
+      description: Paramaters described as 'search parameters' are handled differently for each node type. eg. firstname is used to search for people by first name, but is ignored when searching for projects or offices.
+      tags:
+        - Card
+      parameters:
+        - name: nodeType
+          in: query
+          description: The Type of card we are looking for. (eg. Team)
+          type: string
+          required: true
+        - name: byreltype
+          in: query
+          description: Search by this relationship to another node. To be used in conjunction with byrelnode
+          type: string
+          required: false
+        - name: byrelnode
+          in: query
+          description: Search by a relationship to this node ID. To be used in conjunction with byrel
+          type: string
+          required: false
+        - name: query
+          in: query
+          description: Query parameters for the search. This is a set of key/value pairs. eg. 'firstname:harry,lastname:potter' for a nodeType=Person search.
+          required: false
+          type: string
+        - $ref: "#/parameters/city"
+        - $ref: "#/parameters/region"
+        - $ref: "#/parameters/country"
+        
+        # General Params
+        - $ref: "#/parameters/extended"  
+        - $ref: "#/parameters/group"
+        - $ref: "#/parameters/groupcutoff"
+        - $ref: "#/parameters/firstLetter"
+        - $ref: "#/parameters/dateParam"
+      responses:
+        "200":
+          description: Returns all cards of a given type.
+          schema:
+            $ref: "#/definitions/GenericResponse" 
+    post:
+      operationId: post
+      description: Add a node to theLink.
+      tags:
+        - Card
+      parameters:
+        - name: Card
+          in: body
+          description: An object specifying a name, nodetype, and any other properties for the node.
+          required: true
+          schema: 
+            $ref: "#/definitions/CardSchema"
+      responses:
+        "201":
+          description: The created card
+          schema:
+            $ref: "#/definitions/GenericResponse" 
+    options:
+      operationId: options
+      description: Gets search configuration info for a given card. If there is no currently logged in user, this function will return 204 with an empty body
+      tags:
+        - Card
+      parameters:
+        - name: nodeType
+          in: query
+          description: The Type of card we are looking for. (eg. Team)
+          type: string
+          required: false
+      responses:
+        "200":
+          description: Returns search options for cards.
+          schema:
+            $ref: "#/definitions/GenericResponse" 
+  /api/card/{id}:
+    x-swagger-router-controller: card
+    delete:
+      operationId: del
+      tags:
+        - Card
+      parameters:
+        - name: id
+          in: path
+          description: ID of the node to delete
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/mapsearch:
+    x-swagger-router-controller: mapsearch
+    get:
+      tags:
+        - MapSearch
+      parameters:
+        - name: latitude
+          in: query
+          description: latitude  of center point
+          type: string
+        - name: longitude
+          in: query
+          description: longitude of center point
+          type: string
+        - name: distance
+          in: query
+          description: distance from center (radius) for query to catch
+          type: string
+        - $ref: "#/parameters/extended"  
+        - $ref: "#/parameters/group"
+        - $ref: "#/parameters/groupcutoff"
+        - $ref: "#/parameters/firstLetter"
+        - $ref: "#/parameters/dateParam"
+      responses:
+        "200":
+          description: Success returns node collection in boundary polygon
+          schema:
+            $ref: "#/definitions/GenericResponse" 
+  /api/fulltextsearch:
+    x-swagger-router-controller: fulltextsearch
+    get:
+      tags:
+        - FullTextSearch
+      parameters:
+        - name: name
+          in: query
+          description: name string to search across project, company, contact and people node names
+          type: string
+        - name: index
+          in: query
+          description: search index to use 
+          type: string  
+        - $ref: "#/parameters/extended"  
+        - $ref: "#/parameters/group"
+        - $ref: "#/parameters/groupcutoff"
+        - $ref: "#/parameters/firstLetter"
+        - $ref: "#/parameters/dateParam"        
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"  
+  /api/articles:
+    x-swagger-router-controller: articles
+    post:
+      tags:
+        - Articles
+      parameters:
+        - name: name
+          in: formData
+          description: The article's title
+          required: true
+          type: string
+        - name: summary
+          in: formData
+          description: A summary of the article
+          required: true
+          type: string
+        - name: source
+          in: formData
+          description: The source URL of the article
+          required: true
+          type: string
+        - name: photourl
+          in: formData
+          description: A URL of the associated photo
+          required: true
+          type: string
+        - name: topicid
+          in: formData
+          description: The ID of a topic to categorize this under.
+          required: false
+          type: string
+      responses:
+        "201":
+          description: Created Successfully
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/pivot/info/{id}:
+    x-swagger-router-controller: pivot
+    get:
+      tags:
+        - Pivot
+      operationId: getInfo
+      description: Gets pivot info for a given node
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the node. (Can by any type of node)
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"  
+  /api/pivot/{id}:
+    x-swagger-router-controller: pivot
+    get:
+      tags:
+        - Pivot
+      operationId: pivotAll
+      description: Pivots over all relationships a given node has.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the node. (Can by any type of node)
+          required: true
+          type: string
+        - $ref: "#/parameters/group"
+        - $ref: "#/parameters/groupcutoff"
+        - $ref: "#/parameters/firstLetter"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"  
+  /api/pivot/bytype/{id}/{nodetype}:
+    x-swagger-router-controller: pivot
+    get:
+      tags:
+        - Pivot
+      operationId: pivotByType
+      description: Pivots over a node, returning all nodes of a certain type with a given relationship to the supplied node.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the node. (Can by any type of node)
+          required: true
+          type: string
+        - name: nodetype
+          in: path
+          description: The type of node we are pivoting over. Only nodes of this type will be returned.
+          required: true
+          type: string
+        - $ref: "#/parameters/group"
+        - $ref: "#/parameters/groupcutoff"
+        - $ref: "#/parameters/firstLetter"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"  
+  /api/pivot/byrel/{id}/{reltype}:
+    x-swagger-router-controller: pivot
+    get:
+      tags:
+        - Pivot
+      operationId: pivotByRel
+      description: Pivots over a specific relationship on a node, returning all nodes with that relationship to this node. Relationships work in either direction.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the node. (Can by any type of node)
+          required: true
+          type: string
+        - name: nodetype
+          in: query
+          description: The type of node we are pivoting over. Only nodes of this type will be returned.
+          required: false
+          type: string
+        - name: reltype
+          in: path
+          description: The type of relationship we are pivoting over.
+          required: true
+          type: string
+        - $ref: "#/parameters/group"
+        - $ref: "#/parameters/groupcutoff"
+        - $ref: "#/parameters/firstLetter"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/questions:
+    x-swagger-router-controller: questions
+    get:
+      tags:
+        - Questions
+      parameters:
+        - name: nodetype
+          in: query
+          description: The type of node we want to ask questions about
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/questions/ask:
+    x-swagger-router-controller: questions
+    get:
+      operationId: ask
+      tags:
+        - Questions
+      parameters:
+        - name: id
+          in: query
+          description: The Id of the node we're asking the question about
+          type: string
+          required: true
+        - name: questionstr
+          in: query
+          description: The string corresponding to the question we want to ask
+          type: string
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/questions/dashboard:
+    x-swagger-router-controller: questions
+    get:
+      operationId: dashboard
+      tags:
+        - Questions
+      parameters:
+        - name: label
+          in: query
+          description: The label from the dashboard graph that the question is about
+          type: string
+          required: true
+        - name: questionstr
+          in: query
+          description: The string corresponding to the question we want to ask
+          type: string
+          required: true
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"            
+  /user:
+    x-swagger-router-controller: user
+    get:
+      description: Gets the information for the currently authenticated user. Requires authentication
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+    post:
+      description: Registers a new user
+      tags:
+        - User
+      parameters:
+        - name: email
+          in: formData
+          description: The email of the new user
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: The password belonging to the new user
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+    delete:
+      description: Deletes the authenticated user's account. Requires authentication
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /user/login:
+    x-swagger-router-controller: user
+    post:
+      operationId: login
+      description: Takes a username and password as HTTP POST form data. Starts a browser session upon success.
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /user/logout:
+    x-swagger-router-controller: user
+    get:
+      operationId: logout
+      description: Ends the browser session. (If Sessions enabled. Does nothing in pure API mode)
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /user/gettoken:
+    x-swagger-router-controller: user
+    get:
+      operationId: getAuthToken
+      description: Gets an authentication token for the current user. The token is a JWT. Requires HTTP basic authentication.
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /user/completetutorial:
+    x-swagger-router-controller: user
+    get:
+      operationId: completeTutorial
+      description: Updates the DB to show that the user has completed the new user tutorial. It won't autostart for them again.
+      tags:
+        - User
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/meta/searchinfo:
+    x-swagger-router-controller: meta
+    get:
+      operationId: getSearchInfo
+      description: Gets info for searches allowed on the DB. Useful from a UI perspective.
+      tags:
+        - Meta
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /meta/configinfo:
+    x-swagger-router-controller: meta
+    get:
+      operationId: getConfigInfo
+      description: Gets misc information about how the API is currently configured with regard to things like authentication methods supported.
+      tags:
+        - Meta
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/dashboard/graphs:
+    x-swagger-router-controller: dashboard
+    get:
+      operationId: getGraphs
+      description: Grabs some display graphs for theLink's dashboard.
+      tags:
+        - Dashboard
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/dashboard/metrics:
+    x-swagger-router-controller: dashboard
+    get:
+      operationId: getMetrics
+      description: Grabs some display metrics for theLink's dashboard.
+      tags:
+        - Dashboard
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+  /api/dashboard/userpivot:
+    x-swagger-router-controller: dashboard
+    get:
+      operationId: getUserPivot
+      description: Grabs a small JSON graph/network centered around the logged in userx for display
+      tags:
+        - Dashboard
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+# Common search params
+parameters:
+  dateParam:
+    name: date
+    in: query
+    description: Match nodes on the given date, in the form YYYYMMDD. The day and the month can be omitted.
+    type: string
+  firstLetter:
+    name: firstletter
+    in: query
+    description: Returns items whose name starts with this letter
+    type: string
+  extended:
+    name: extended
+    in: query
+    description: Also fetch secondary information about the node. (Defined by some of the node's relationships)
+    type: boolean
+  groupcutoff:
+    name: groupcutoff
+    in: query
+    description: If grouping enabled, only group if we have more than this number of results
+    type: integer
+  group:
+    name: group
+    in: query
+    description: Return items grouped by 'alphabet', 'date', or 'location'
+    type: string
+  city:
+    name: city
+    in: query
+    description: The city the node is located in
+    type: string
+  region:
+    name: region
+    in: query
+    description: The province or state the node is located in
+    type: string
+  country:
+    name: country
+    in: query
+    description: The country the node is located in
+    type: string
+# Schema Definition
+definitions:
+  GenericResponse:
+    type: object
+    #required:
+    #  - data
+    #properties:
+    #  data:
+    #    type : array
+  CardSchema:
+    type: object
+    required:
+    - Name
+    - NodeType
+    - Properties
+    properties:
+      Name:
+        type: string
+      NodeType:
+        type: string
+      Properties:
+        type: object
+      Connections:
+        type: array
+        items:
+          type: object
+          required:
+          - RelName
+          - RelNode
+          properties:
+            RelName:
+              type: string
+            RelNode:
+              type: string
+            Direction:
+              type: string
+          

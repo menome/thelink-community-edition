@@ -1,0 +1,40 @@
+<li ng-repeat="card in dates">
+  <md-card flex class="content-card" ng-cloak layout="row">
+    <div class="sideAccent md-primary md-hue-2" hide show-gt-sm md-colors="{background: 'primary-700', color: 'primary-500'}"></div>
+    <md-card-title layout="row" style="flex: initial;">
+      <!-- We don't want it to try to flex. -->
+      <md-card-title-text>
+        <span class="md-headline">
+          <md-button ng-click="click({date:{year: card.year}})">
+            {{card.year}}
+          </md-button>
+        </span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content layout="row" layout-align="center center" layout-padding>
+      <md-input-container flex>
+        <label>Month</label>
+        <md-select ng-model="selectedMonth">
+          <md-option><em>Any</em></md-option>
+          <md-option ng-repeat="month in card.months" ng-value="month">
+            {{month.month}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container flex ng-hide="!selectedMonth || selectedMonth == 'None'">
+        <label>Day</label>
+        <md-select ng-model="selectedDay">
+          <md-option><em>Any</em></md-option>
+          <md-option ng-repeat="day in selectedMonth.days" ng-value="day">
+            {{day.day}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container flex>
+        <md-button ng-click="click({date:{year: card.year, month: selectedMonth ? selectedMonth.month : null, day: selectedDay ? selectedDay.day : null}})">
+          Search
+        </md-button>
+      </md-input-container>
+    </md-card-content>
+  </md-card>
+</li>

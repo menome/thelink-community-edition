@@ -1,0 +1,71 @@
+<md-dialog aria-label="Create new Article" style="min-width:320px;flex:auto;" flex="66">
+  <form name="create" novalidate ng-submit="create.$valid && answer(data)">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-icon md-font-icon="fa-file-text-o" class="fa fa-2x"></md-icon>
+        <div layout-margin>
+          <h2>New Article</h2>
+        </div>
+        <span flex></span>
+        <md-button class="md-primary md-hue-2 topbar-button" layout="column" layout-align="center center" ng-click="cancel()" aria-label="Grid View">
+          <md-icon md-font-icon="fa-times" class="fa fa-2x"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="column">
+        <md-input-container>
+          <label>Article Title</label>
+          <input name="title" ng-model="data.title" required maxlength="150" />
+          <div ng-messages="create.title.$error">
+            <div ng-message-exp="['required', 'maxlength']">
+              Please Enter a title
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Source URL</label>
+          <input name="source" ng-model="data.source" required/>
+          <div ng-messages="create.source.$error">
+            <div ng-message-exp="['required', 'maxlength']">
+              Please Enter a valid source URL
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>Photo URL</label>
+          <input name="photourl" ng-model="data.photourl" required/>
+          <div ng-messages="create.photourl.$error">
+            <div ng-message-exp="['required', 'maxlength']">
+              Please Enter a valid photo URL
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>Topic</label>
+          <md-select ng-model="data.topicid">
+            <md-option ng-repeat="t in topicList" value="{{t.Uuid}}">
+              {{t.Name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <label>Summary</label>
+          <textarea ng-model="data.summary" md-maxlength="1000" rows="5" md-select-on-focus></textarea>
+        </md-input-container>
+        <div ng-show="loading" layout="row" flex layout-padding layout-margin layout-align="space-around">
+          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <p ng-show="failed">Failed to create article.</p>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row" layout-align="end">
+      <md-button ng-click="cancel()">
+        Cancel
+      </md-button>
+      <md-button type="submit" class="md-raised md-primary">
+        Create
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

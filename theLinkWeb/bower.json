@@ -1,0 +1,30 @@
+{
+  "name": "thelink",
+  "description": "Harness your organizations critical expertise",
+  "version": "1.0.0",
+  "homepage": "http://www.menome.com",
+  "license": "Commercial",
+  "private": true,
+  "resolutions": {
+    "angular": "^1.6.1"
+   },
+  "dependencies": {  
+    "angular-animate": "^1.6.1",
+    "angular-aria": "^1.6.1",
+    "angular-messages": "^1.6.1",
+    "angular-cookies": "^1.6.1",
+    "angular-mocks": "^1.6.1",
+    "angular-marked": "^1.2.2",
+    "angular-drag-and-drop-lists": "^2.0.0",
+    "angular-material": "^1.1.1",
+    "font-awesome": "^4.7",
+    "intro.js" : "^2.4.0",
+    "ngmap": "^1.17.8",
+    "fontawesome-markers": "^4.6.1",
+    "googlemaps-js-marker-clusterer": "https://github.com/googlemaps/js-marker-clusterer.git#gh-pages",
+    "angular-chart.js": "^1.1.1",
+    "chart.js": "^2.4.0",
+    "vis": "^4.16.0",
+    "angular-visjs": "^4.16.0"
+  }
+}

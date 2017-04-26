@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>theLink | Main Page</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+  <link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="assets/app.css" />
+  <link rel="stylesheet" href="./bower_components/vis/dist/vis.css" />
+  <!-- Help CSS -->
+  <link href="./bower_components/intro.js/minified/introjs.min.css" rel="stylesheet">
+</head>
+
+<body id="theLinkBody" ng-app="theLink" layout="column" ng-controller="TheLinkController as lc">
+  <div class="topAccent md-primary md-hue-2" hide show-gt-sm md-colors="{background: 'primary-700', color: 'primary-500'}"></div>
+  <md-toolbar layout="row" ng-cloak>
+    <!-- Button for showing the menu on mobile -->
+    <md-button hide-gt-sm class="md-primary md-hue-2 topbar-button" ng-click="lc.toggleLeftPanel()" aria-label="Menu" title="Open Main Menu">
+      <md-icon md-font-icon="fa-bars" class="fa fa-2x"></md-icon>
+    </md-button>
+    <!--home button-->
+    <md-button id="homeButton" class="md-primary md-hue-2 topbar-button" ng-click="lc.setSearchMode(lc.searchModes.HOME)" aria-label="Home"
+      title="Home" ng-class="{'button-selected' : lc.searchMode === lc.searchModes.HOME}">
+      <md-tooltip md-direction="bottom">Home</md-tooltip>
+      <md-icon md-font-icon="fa-home" class="fa fa-2x"></md-icon>
+    </md-button>
+    <div class="topbar-sidebar" layout="row" hide show-gt-sm>
+      
+      <md-button id="listSearchButton" class="md-primary md-hue-2 topbar-button" ng-click="lc.setSearchMode(lc.searchModes.LIST)"
+        aria-label="Card Explorer: List" title="Card Explorer: List" ng-class="{'button-selected' : lc.searchMode === lc.searchModes.LIST}">
+        <md-tooltip md-direction="bottom">Card Explorer: List</md-tooltip>
+        <md-icon md-font-icon="fa-tasks" class="fa fa-2x"></md-icon>
+      </md-button>
+       <md-button id="textSearchButton" class="md-primary md-hue-2 topbar-button" ng-click="lc.setSearchMode(lc.searchModes.TEXT)"
+        ng-class="{'button-selected' : lc.searchMode === lc.searchModes.TEXT}" aria-label="Card Explorer: Text" title="Card Explorer: Text">
+        <md-tooltip md-direction="bottom">Card Explorer: Text</md-tooltip>
+        <md-icon md-font-icon="fa-search" class="fa fa-2x"></md-icon>
+      </md-button>
+      <md-button id="mapSearchButton" class="md-primary md-hue-2 topbar-button" layout="column" layout-align="center center" aria-label="Globe"
+        ng-click="lc.setSearchMode(lc.searchModes.MAP)" ng-class="{'button-selected' : lc.searchMode === lc.searchModes.MAP}"
+        aria-label="Card Explorer: Map" title="Card Explorer: Map">
+        <md-tooltip md-direction="bottom">Card Explorer: Map (Beta)</md-tooltip>
+        <md-icon md-font-icon="fa-globe" class="fa fa-2x"></md-icon>
+      </md-button>
+      <!-- Full Text Search -->
+      <form ng-submit="lc.fullTextSearch(lc.fullText, 'Names')" id="fullTextSearch">
+        <md-list-item layout="row" style="height:100%;">
+          <input class="md-body-1 " placeholder="Search for Anything!" aria-label="Full Text" md-no-autogrow ng-model="lc.fullText"
+          />
+          <md-tooltip md-direction="bottom">
+            The Card Finder finds Index Cards whose name matches the text you enter....
+          </md-tooltip>
+          <md-button type="submit" class="md-primary md-hue-2 topbar-button">
+            Find
+          </md-button>
+        </md-list-item>
+        <form>
+    </div>
+    <!-- Feature Toggled viewing modes -->
+    <div layout="row" hide>
+      <md-button class="md-primary md-hue-2 topbar-button" layout="column" layout-align="center center" ng-click="null" aria-label="Grid View">
+        <md-icon md-font-icon="fa-th-large" class="fa fa-2x"></md-icon>
+      </md-button>
+      <md-button class="md-primary md-hue-2 topbar-button" layout="column" layout-align="center center" ng-click="null" aria-label="Calendar">
+        <md-icon md-font-icon="fa-calendar" class="fa fa-2x"></md-icon>
+      </md-button>
+    </div>
+    <h1 hide show-gt-sm>&ndash;&ndash;&gt;theLink&lt;&ndash;&ndash;</h1>
+    <!-- Choose between information and link modes -->
+    <div layout="row" hide show-gt-sm>
+      <!-- back/forward buttons -->
+      <md-button class="md-primary md-hue-2 topbar-button" ng-hide="!lc.canPrevSearch()" ng-click="lc.prevSearch();" title="Go Back"
+        aria-label="Go Back">
+        <md-icon md-font-icon="fa-arrow-left" class="fa fa-2x"></md-icon>
+      </md-button>
+      <md-button class="md-primary md-hue-2 topbar-button" ng-hide="!lc.canNextSearch()" ng-click="lc.nextSearch();" title="Go Forward"
+        aria-label="Go Forward">
+        <md-icon md-font-icon="fa-arrow-right" class="fa fa-2x"></md-icon>
+      </md-button>
+      <md-button hide class="md-primary md-hue-2 topbar-button" ng-click="lc.switchMode('info')" aria-label="Information" title="Information Mode"
+        ng-class="{'button-selected' : lc.appMode === 'info'}">
+        <md-icon md-font-icon="fa-info-circle" class="fa fa-2x"></md-icon>
+      </md-button>
+      <md-button hide ng-disabled="!lc.canContribute" class="md-primary md-hue-2 topbar-button" ng-click="lc.switchMode('link')"
+        aria-label="Link" title="Link Mode" ng-class="{'button-selected' : lc.appMode === 'link'}">
+        <md-icon md-svg-icon="menome" ng-style="{'opacity': lc.canContribute ? '0.5' : '0.2'}"></md-icon>
+      </md-button>
+    </div>
+    <!-- Create new Node Menu -->
+    <md-menu style="margin-left:0px;margin-right:0px;">
+      <md-button aria-label="Create Node" title="Create node" ng-hide="!lc.canContribute" ng-click="lc.openMenu($mdOpenMenu, $event)"
+        class="md-primary md-hue-2 topbar-button">
+        <md-icon md-font-icon="fa-plus" class="fa fa-2x"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item ng-repeat="item in lc.creationDialogues">
+          <md-button ng-click="item.dialog($event)" aria-label="{{item.name}}" title="{{item.name}}">
+            <md-icon md-font-icon="fa-{{item.node.icon}}" class="fa fa-2x"></md-icon>
+            <p>{{item.name}}</p>
+          </md-button>
+          <md-menu-divider ng-hide="$last"></md-menu-divider>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+    <!-- The User's menu -->
+    <md-menu style="margin-left:0px;margin-right:0px;" md-position-mode="target-right target">
+      <md-button aria-label="Open User Menu" ng-click="lc.openMenu($mdOpenMenu, $event)" class="md-primary md-hue-2 topbar-button">
+        <md-icon md-font-icon="fa-user" class="fa fa-2x"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <b>Welcome {{lc.user.Email}}!</b>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button disabled="disabled" ng-click="lc.accountSettings()">
+            <md-icon md-font-icon="fa-wrench" class="fa fa-2x"></md-icon>
+            <p>User Settings</p>
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="lc.logout()">
+            <md-icon md-font-icon="fa-sign-out" class="fa fa-2x"></md-icon>
+            <p>Log Out/Switch User</p>
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+    <!-- Help Menu -->
+    <md-menu style="margin-left:0px;margin-right:0px;" md-position-mode="target-right target">
+      <md-button id="help" class="md-primary md-hue-2 topbar-button" layout="column" layout-align="center center" aria-label="Help Menu"
+        ng-click="lc.openMenu($mdOpenMenu, $event)" aria-label="Help Menu" title="Help Menu">
+        <md-icon md-font-icon="fa-question-circle-o" class="fa fa-2x"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button onclick="startIntro();">
+            <md-icon md-font-icon="fa-wrench" class="fa fa-2x"></md-icon>
+            <p>Quick Tour</p>
+          </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button id="DetailedHelp" ng-click="lc.getHelp()">
+            <md-icon md-font-icon="fa-sign-out" class="fa fa-2x"></md-icon>
+            <p>Show Help</p>
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-list-item layout="row" style="height:100%;">
+            <input class="md-body-1 " placeholder="Search Help" aria-label="Help" md-no-autogrow ng-model="lc.helpText" />
+            <md-button ng-click="lc.fullTextSearch(lc.helpText,'Help')" class="md-primary md-hue-2 topbar-button">
+              Go
+            </md-button>
+          </md-list-item>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="lc.feedbackFunc()">
+            <md-icon md-font-icon="fa-sign-out" class="fa fa-2x"></md-icon>
+            <p>Feedback and Feature Requests</p>
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </md-toolbar>
+  <!-- Breadcrumb Trail Thing -->
+  <div class="breadcrumb-bar md-primary md-hue-2" md-colors="{background: 'primary-800', color: 'primary-500'}" ng-cloak layout="row">
+    <div ng-repeat="crumb in lc.breadCrumb" layout="row" class='breadcrumb-bar-text'>
+      <button ng-click="lc.loadIndex($index)" class='breadcrumb-bar-text'>
+              {{crumb.text}}
+            </button>
+      <p ng-hide="$last" class='breadcrumb-bar-text'> &ndash;&gt;&nbsp; </p>
+    </div>
+  </div>
+  <section layout="row" flex>
+    <!-- Left Sidebar handler for responsive/mobile-->
+    <md-sidenav id="listNavigation" ng-cloak class="md-sidenav-left" md-is-locked-open="$mdMedia('gt-sm') &&  lc.searchMode != lc.searchModes.MAP"
+      md-component-id="left" layout="column" md-whiteframe="0">
+      <!--  buttons for sliding menu from main to search -->
+      <div ng-controller="LeftPanelController as lbc" layout="column">
+        <!-- mobile toolbar -->
+        <md-toolbar layout="row" ng-cloak hide-gt-sm>
+          <md-button ng-show="lc.leftPanelMenuType != lc.leftPanelMenuTypes.MENU" style="position:absolute;" layout="column" layout-align="center center"
+            class="md-primary md-hue-2 topbar-button" aria-label="Back" title="Back to Main Menu" ng-click="lc.changeLeftPanel(lc.leftPanelMenuTypes.MENU)">
+            <md-icon md-font-icon="fa-arrow-left" class="fa fa-2x"></md-icon>
+          </md-button>
+          <!-- titles for search or main -->
+          <h1 ng-show="lc.leftPanelMenuType == lc.leftPanelMenuTypes.MENU">Main Menu</h1>
+          <h1 ng-show="lc.leftPanelMenuType != lc.leftPanelMenuTypes.MENU">Search</h1>
+        </md-toolbar>
+        <div ng-show="lbc.loading" layout="row" flex layout-padding layout-margin layout-align="space-around">
+          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <!-- left panel list control -->
+        <the-link-left-panel type="{{lc.leftPanelMenuType}}"></the-link-left-panel>
+      </div>
+    </md-sidenav>
+    <!-- Dashboard Container -->
+    <md-content ng-show="lc.showDashboard" flex layout="column" md-colors="{background: 'grey-A100'}" style="overflow-y:scroll;">
+      <the-link-dashboard></the-link-dashboard>
+    </md-content>
+    <!-- Main Content Container -->
+    <md-content ng-show="lc.showSearchResultsArea" flex layout="column" md-colors="{background: 'background-400'}" style="overflow-y:hidden;">
+      <!-- Map Container -->
+      <div layout="row" id="search-map" 
+          ng-style="{'visibility': lc.showMap ? 'visible':'hidden' ,'height': lc.showMap ? '500px':'0px' }"
+          ng-cloak md-colors="{background: 'background-100'}" 
+          ng-controller="MapController as mc" 
+          map-lazy-load="https://maps.google.com/maps/api/js"
+          map-lazy-load-params="mc.googleMapKey">
+        <ng-map 
+          id="map-control" 
+          class="search-map" 
+          pan-control="true" 
+          map-type-control="true" 
+          map-type-control-options="{style:'DROPDOWN_MENU'}"
+          zoom-control="true" 
+          zoom-control-options="{style:'SMALL'}" 
+          height="100%" width="100%" 
+          lazy-init="true" 
+          style="height:500px">
+        </ng-map>
+      </div>
+      <!-- Card Search Filter -->
+      <div id="filterBar" hide show-gt-xs layout="row" class="searchfilter-bar " ng-cloak md-colors="{background: 'blue-grey-400'}">
+        <div layout-margin layout-align="center">
+          <input class="nodeSearchInput" placeholder="Search Within Results" aria-label="Search Within Results" md-no-autogrow ng-model="lc.searchFilter"
+          />
+        </div>
+        <div layout-margin layout-align="center">
+           <input class="nodeSearchInput" placeholder="UWI/LSD Search" aria-label="Search by UWI/LSD" md-no-autogrow ng-model="lc.lsdFilter"
+          />
+        </div>
+      </div>
+      <div layout="column" flex style="height:100%;">
+        <!-- Loading Spinner -->
+        <div ng-show="lc.loading" layout="row" flex layout-padding layout-margin layout-align="space-around">
+          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <!-- Message Area shows when there are no items, or loading -->
+        <div ng-show="!lc.loading && lc.items.length < 1" layout="column" class="content-messages" flex layout-padding layout-margin
+          layout-align="space-around" layout-align="center" ng-cloak>
+          <div layout="column" ng-show="lc.searchFinished">
+            <md-icon md-font-icon="fa-circle-thin" class="fa"></md-icon>
+            <p>No Results Found</p>
+          </div>
+          <!-- Full Text Area shows when there are no items, and text search enabled -->
+          <div layout="row" layout-padding layout-margin layout-align="space-around" layout-align="center" ng-show="!lc.searchFinished && lc.showFullTextSearch">
+            <!-- Full Text Search -->
+            <form ng-submit="lc.fullTextSearch(lc.fullText)" id="fullTextSearch2">
+              <md-list-item layout-align="center">
+                <input class="md-headline" placeholder="Type a name here" aria-label="Full Text" md-no-autogrow ng-model="lc.fullText" />
+                <md-button type="submit" class="md-display-2 md-primary md-hue-2 md-raised md-cornered">
+                  Find
+                </md-button>
+              </md-list-item>
+              <form>
+          </div>
+        </div>
+        <!-- Result Cards Section - Shows following a search -->
+        <div id="main-content" ng-show="!lc.loading" layout="column" style="width:100%;overflow-y:scroll;">
+          <ul class="content-cardlist" dnd-list="lc.items">
+            <div ng-if="lc.itemsType === 'ResultSet'" infinite-scroll='lc.loadScroll()' infinite-scroll-container='#main-content'>
+              <li ng-repeat="card in filtered_result = (lc.items | filter:lc.searchFilterFunc |limitTo:lc.displayCount)" dnd-draggable="card"
+                dnd-moved="lc.items.splice($index, 1)">
+                <the-link-card card="card" click="lc.showContentCard($event,item)" on-select="lc.selectCard(item)" media="lc.$mdMedia">
+                </the-link-card>
+              </li>
+              <!-- Result Cards -->
+              <div id="resultsArea" layout="column" ng-show="lc.items.length > 0 && filtered_result.length === 0" class="content-messages"
+                ng-cloak>
+                <md-icon md-font-icon="fa-circle-thin" class="fa"></md-icon>
+                <p>No results matched your filter!</p>
+              </div>
+            </div>
+            <div ng-if="lc.itemsType === 'LetterGroup'">
+              <li ng-repeat="card in lc.items.groups">
+                <the-link-group-card card="card" click="lc.selectGroup(groupType, queryStr)">
+                </the-link-group-card>
+              </li>
+            </div>
+            <div ng-if="lc.itemsType === 'DateGroup'">
+              <the-link-date-cards dates="lc.items.groups" click="lc.selectDate(date)"> </the-link-date-cards>
+            </div>
+            <div ng-if="lc.itemsType === 'LocationGroup'">
+              <the-link-location-cards locations="lc.items.groups" click="lc.selectLocation(location)"> </the-link-location-cards>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </md-content>
+    <!-- Right Sidebar -->
+    <md-sidenav id="relationshipBrowser" class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="$mdMedia('gt-md') && lc.rightPanelOpen"
+      ng-cloak>
+      <md-content ng-controller="RightPanelController as rpc" style="overflow-x: hidden">
+        <md-subheader class="md-no-sticky" align="right" hide show-gt-sm>Relationship Explorer</md-subheader>
+        <md-content layout-padding layout="column" layout-align="center center">
+          <i class="fa fa-{{rpc.selectedCard.displayInfo.Icon}} fa-4x"></i>
+          <b style="text-align: center">{{rpc.selectedCard.displayInfo.Name}}</b>
+          <p style="text-align: center;color: gray;margin:0px;">{{rpc.selectedCard.NodeType}} Card</p>
+        </md-content>
+        <md-divider></md-divider>
+        <md-nav-bar md-selected-nav-item="rpc.navMode" nav-bar-aria-label="Right Panel Navigation Mode">
+          <md-nav-item md-nav-click="goto('info')" name="info">Info</md-nav-item>
+          <md-nav-item md-nav-click="goto('pivot')" name="pivot">Explore</md-nav-item>
+          <md-nav-item md-nav-click="goto('question')" name="question">Questions</md-nav-item>
+        </md-nav-bar>
+        <div ng-show="rpc.loading" layout="row" flex layout-padding layout-margin layout-align="space-around">
+          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <!-- Node Info -->
+        <div ng-show="!rpc.loading && rpc.selectedCard && rpc.navMode === 'info'">
+          <!-- Shows some templated info about the node -->
+          <the-link-right-panel-digest ng-if="rpc.selectedCard" display-card="rpc.selectedCard"></the-link-right-panel-digest>
+          <md-divider></md-divider>
+        </div>
+        <!-- Pivot controls -->
+        <md-list ng-show="!rpc.loading && rpc.selectedCard && rpc.navMode === 'pivot'">
+          <md-list-item ng-show="rpc.selectedCard.pivotInfo.length < 1">
+            No cards are connected to this card.
+          </md-list-item>
+          <md-list-item ng-click="lc.pivot(rpc.selectedCard,'all')" ng-hide="rpc.selectedCard.pivotInfo.length < 1" aria-label="item"
+            layout-align="center center">
+            <md-icon md-font-icon="fa-globe" class="fa fa-2x"></md-icon>
+            <p>All Connected Cards</p>
+            <md-divider></md-divider>
+          </md-list-item>
+          <div ng-repeat="pivot in rpc.selectedCard.pivotInfo">
+            <md-list-item ng-click="lc.pivot(rpc.selectedCard,'type', pivot.Label, rel.Name);pivot.expanded = true;" layout-align="center center"
+              aria-label="item">
+              <md-icon md-font-icon="fa-{{rpc.pivotItems[pivot.Label].icon}}" class="fa fa-2x"></md-icon>
+              <p>
+                <span ng-if="pivot.Count > 1">{{rpc.pivotItems[pivot.Label].text}} : </span>
+                <span ng-if="pivot.Count <= 1">{{pivot.Label}} : </span> {{pivot.Count}}
+              </p>
+              <md-button class="md-secondary md-icon-button" ng-click="pivot.expanded = !pivot.expanded" aria-label="Expand">
+                <md-icon md-font-icon="fa-{{pivot.expanded ? 'caret-down' : 'caret-right'}}" class="fa fa-1x" style="text-align:center;"></md-icon>
+              </md-button>
+            </md-list-item>
+            <md-list-item ng-show="pivot.expanded" class="subnav">
+              <md-list class="sublist">
+                <div ng-repeat="rel in pivot.Relationships">
+                  <md-list-item ng-click="lc.pivot(rpc.selectedCard,'rel',pivot.Label,rel.Name)" aria-label="item">
+                    <p>{{rel.Count}} {{rel.HumanReadableName}}</p>
+                  </md-list-item>
+                </div>
+              </md-list>
+            </md-list-item>
+            <md-divider></md-divider>
+          </div>
+        </md-list>
+        <!-- Question controls -->
+        <md-list ng-show="!rpc.loading && rpc.selectedCard && rpc.navMode === 'question'">
+          <md-list-item ng-show="rpc.selectedCard.questionInfo.length < 1" aria-label="item">
+            No questions available for this card.
+          </md-list-item>
+          <div ng-repeat="question in rpc.selectedCard.questionInfo">
+            <md-list-item ng-click="lc.askQuestion(question, rpc.selectedCard)" layout-align="center center" aria-label="item">
+              <md-icon md-font-icon="fa-question" class="fa fa-2x"></md-icon>
+              <p> {{question.FriendlyName}} </p>
+              <md-divider></md-divider>
+            </md-list-item>
+          </div>
+        </md-list>
+        <!-- Close button. It deselects the current node and collapses the side panel. -->
+        <md-content layout="row" layout-align="end">
+          <md-button ng-if="lc.canContribute && rpc.selectedCard && lc.canDelete(rpc.selectedCard)" class="md-warn" ng-disabled="!lc.canContribute"
+            ng-click="lc.confirmAction($event, 'Are you sure?', lc.deleteNode, [rpc.selectedCard.NodeType, rpc.selectedCard.Uuid])">
+            Delete
+          </md-button>
+          <md-button class="md-primary md-hue-2" ng-if="rpc.selectedCard" ng-click="rpc.deselect()">
+            Close
+          </md-button>
+        </md-content>
+      </md-content>
+    </md-sidenav>
+  </section>
+  <!-- External Dependencies -->
+  <script src="./bower_components/angular/angular.min.js"></script>
+  <script src="./bower_components/angular-animate/angular-animate.js"></script>
+  <script src="./bower_components/angular-aria/angular-aria.js"></script>
+  <script src="./bower_components/angular-material/angular-material.min.js"></script>
+  <script src="./bower_components/angular-cookies/angular-cookies.min.js"></script>
+  <script src="./bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min.js"></script>
+  <script src="./bower_components/marked/lib/marked.js"></script>
+  <script src="./bower_components/angular-marked/dist/angular-marked.js"></script>
+  <!-- Map Dependencies -->
+  <script src="./bower_components/ngmap/build/scripts/ng-map.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZqlu_fx_o9Hl-uqJKBcDXLewRfQHhbug"></script>
+  <script src="./bower_components/fontawesome-markers/fontawesome-markers.min.js"></script>
+  <script src="./bower_components/googlemaps-js-marker-clusterer/src/markerclusterer.js"></script>
+  <!-- Dashboard Dependancies -->
+  <script src="./bower_components/chart.js/dist/Chart.min.js"></script>
+  <script src="./bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+  <script src="./bower_components/vis/dist/vis.js"></script>
+  <script src="./bower_components/angular-visjs/angular-vis.js"></script>
+  <!-- Help Dependancies -->
+  <script type="text/javascript" src="./bower_components/intro.js/minified/intro.min.js"></script>
+  <script src="./src/thelink/HelpTour.js"></script>
+  <!-- Application Scripts -->
+  <script src="./src/thelink/client-conf.js"></script>
+  <script src="./src/common/theLinkConfig.js"></script>
+  <script src="./src/common/theLinkWebService.js"></script>
+  <script src="./src/thelink/TheLink.js"></script>
+  <script src="./src/thelink/TheLinkController.js"></script>
+  <script src="./src/thelink/LeftPanelController.js"></script>
+  <script src="./src/thelink/RightPanelController.js"></script>
+  <script src="./src/thelink/DashboardController.js"></script>
+  <script src="./src/thelink/MapController.js"></script>
+  <script src="./src/thelink/MapService.js"></script>
+  <script src="./src/thelink/TheLinkService.js"></script>
+  <script src="./src/thelink/TheLinkDirective.js"></script>
+  <script src="./src/common/infinite-scroll.js"></script>
+</body>
+
+</html>

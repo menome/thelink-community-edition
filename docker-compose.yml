@@ -1,0 +1,33 @@
+version: "2"
+services:
+
+  neo4j:
+    build:
+      context: ./neo4j
+      dockerfile: Dockerfile
+    ports:
+      - 8476:7474
+      - 7687:7687
+    volumes:
+      - ./neo4jdata/data:/var/lib/neo4j/data
+      - ./neo4jdata/import:/var/lib/neo4j/import
+     # - ./neo4jdata/conf:/var/lib/neo4j/conf
+  thelinkweb:
+    build:
+      context: ./theLinkWeb
+      dockerfile: Dockerfile
+      args:
+        - gruntTask=devEnvironment
+    ports:
+      - 3050:3000 # Web Port (For API and Frontend)
+      - 443:443   # Web Port (SSL)
+      - 5858:5858 # Debugging Stuff I think
+    links:
+      - neo4j
+    volumes: # These need not be mounted in the prod environment.
+      - ./theLinkWeb/app:/srv/theLink/app
+      - ./theLinkWeb/api:/srv/theLink/api
+      - ./theLinkWeb/test:/srv/theLink/test
+      - ./theLinkWeb/config:/srv/theLink/config
+    depends_on:
+      - neo4j

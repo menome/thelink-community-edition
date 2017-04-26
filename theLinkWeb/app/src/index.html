@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Login | theLink </title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+  <link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="assets/app.css" />
+</head>
+
+<body ng-app="login" layout="row" ng-controller="LoginController">
+  <md-content ng-cloak layout="vertical" flex md-colors="{background: 'background-400'}">
+    <div layout="row" layout-align="center center" layout-fill>
+      <md-whiteframe class="md-whiteframe-14dp" layout="column" id="login-card" flex-gt-md="80" flex="100" md-colors="{background: 'background-50'}">
+        <md-toolbar layout="row">
+          <h1>&mdash;&gt; theLink &lt;&mdash;</h1>
+          <img style="padding:10px;" src="./assets/menome-logo-icon.png">
+        </md-toolbar>
+        <!--<form ng-submit="login()" method="post">-->
+        <form id="loginForm" action="/user/login" method="post">
+          <div layout="column" layout-align="center" layout-fill layout-padding>
+            <!-- This style is a hacky Fix for iPhone. -->
+            <!-- iPhone doesn't seem to calculate height of this div properly. Dunno why.-->
+            <div layout="column" style="min-height: 100px;">
+              <md-input-container>
+                <label>Your Login</label>
+                <input name="username" ng-model="user.username">
+              </md-input-container>
+              <md-input-container>
+                <label>Password</label>
+                <input name="password" ng-model="user.password" type="password">
+              </md-input-container>
+            </div>
+            <div class="loading-throbber" ng-show="loading" layout="row" flex layout-padding layout-margin layout-align="space-around">
+              <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div>
+            <div layout="column" layout-align="center">
+              <md-input-container>
+                <div layout="row" layout-align="end">
+                  <md-button ng-click="showRegister($event)" class="md-raised">Register</md-button>
+                  <md-button type="submit" class="md-raised md-primary">Login</md-button>
+                </div>
+              </md-input-container>
+            </div>
+        </form>
+        <div ng-if="config.anonAccess">
+          <md-divider></md-divider>
+          <p>Anonymous login is enabled! Click here to sign in anonymously. You will not be able to make any edits.</p>
+          <form id="anonLoginForm" action="/user/login" method="post">
+            <input type="hidden" name="username" value="anon@menome.com"></input>
+            <input type="hidden" name="password" value="anything"></input>
+            <div layout="row" layout-align="center">
+              <md-button type="submit" class="md-raised md-primary">Login Anonymously</md-button>
+            </div>
+          </form>
+        </div>
+        </div>
+      </md-whiteframe>
+    </div>
+  </md-content>
+  <!-- External Dependencies -->
+  <script src="./bower_components/angular/angular.min.js"></script>
+  <script src="./bower_components/angular-animate/angular-animate.js"></script>
+  <script src="./bower_components/angular-aria/angular-aria.js"></script>
+  <script src="./bower_components/angular-material/angular-material.min.js"></script>
+  <script src="./bower_components/angular-messages/angular-messages.min.js"></script>
+  <script src="./bower_components/angular-cookies/angular-cookies.min.js"></script>
+  <!-- help scripts -->
+  <!-- Application Scripts -->
+  <script src="./src/common/theLinkConfig.js"></script>
+  <script src="./src/login/Login.js"></script>
+  <script src="./src/login/LoginController.js"></script>
+  <script src="./src/login/LoginDirective.js"></script>
+  <script src="./src/common/theLinkWebService.js"></script>
+</body>
+
+</html>

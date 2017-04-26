@@ -1,0 +1,62 @@
+<!--This sidenav list emulates a tree-like structure with a maximum depth of 3 -->
+<md-list ng-show="!lbc.loading">
+  <md-subheader class="md-no-sticky" hide show-gt-sm>Card Explorer: List</md-subheader>
+  <div ng-repeat="lvl1 in lbc.searchMenu">
+    <md-list-item aria-label="{{lvl1.name}}" ng-click="lbc.topLevelClick(lvl1)" layout-align="center center">
+      <!-- Windows Explorer Dropdown Carat Icon -->
+      <md-icon aria-label="Item" md-font-icon="fa-{{lvl1.listExpanded ? 'caret-down' : 'caret-right'}}" style="margin-right:0px;"
+        ng-hide="lvl1.simpleSearch" class="md-secondary-container fa fa-1x"></md-icon>
+      <!-- For Spacing (If the above is not present) -->
+      <md-icon ng-show="lvl1.simpleSearch" class="md-secondary-container fa fa-1x" style="margin-right:0px;"> </md-icon>
+      <md-icon aria-label="Item" md-font-icon="fa-{{lvl1.icon}}" class="fa fa-2x"></md-icon>
+      <p>&nbsp;&nbsp;&nbsp;{{lvl1.name}}</p>
+    </md-list-item>
+    <md-list-item ng-show="lvl1.listExpanded" class="subnav">
+      <md-list class="sublist">
+        <md-list-item aria-label="Item" class="subnav" ng-click="lc.cardSearch({nodeType: lvl1.nodeType, group: 'alphabet'})">
+          <md-icon class="md-secondary-container fa fa-1x" style="margin-right:0px;"> </md-icon>
+          <!-- For spacing purposes -->
+          <p>All {{lvl1.name}} by name</p>
+        </md-list-item>
+        <md-list-item aria-label="Item" ng-show="lvl1.dateSearchable" class="subnav" ng-click="lc.cardSearch({nodeType: lvl1.nodeType, group: 'date'})">
+          <md-icon class="md-secondary-container fa fa-1x" style="margin-right:0px;"> </md-icon>
+          <!-- For spacing purposes -->
+          <p>All {{lvl1.name}} by date</p>
+        </md-list-item>
+        <md-list-item aria-label="Item" ng-show="lvl1.locationSearchable" class="subnav" ng-click="lc.cardSearch({nodeType: lvl1.nodeType, group: 'location'})">
+          <md-icon class="md-secondary-container fa fa-1x" style="margin-right:0px;"> </md-icon>
+          <!-- For spacing purposes -->
+          <p>All {{lvl1.name}} by location</p>
+        </md-list-item>
+        <div ng-repeat="lvl2 in lvl1.listChildren">
+          <md-list-item aria-label="Item" ng-show="lvl2.listChildren.length > 0" ng-click="lvl2.listExpanded = !lvl2.listExpanded">
+            <md-icon md-font-icon="fa-{{lvl2.listExpanded ? 'caret-down' : 'caret-right'}}" class="md-secondary-container fa fa-1x" ng-show="lvl2.listChildren.length > 0"
+              style="margin-right:0px;">
+            </md-icon>
+            <p>{{lvl1.name}} by {{lvl2.name}}</p>
+          </md-list-item>
+          <md-list-item ng-show="lvl2.listExpanded == true" class="subnav">
+            <md-list class="sublist">
+              <div ng-repeat="lvl3 in lvl2.listChildren">
+                <md-list-item aria-label="Item" ng-click="lc.cardSearch({nodeType: lvl1.nodeType, byreltype: lvl2.rel, byrelnode: lvl3.Uuid})">
+                  <md-icon class="md-secondary-container fa fa-1x" style="margin-right:0px;"> </md-icon>
+                  <!-- For spacing purposes -->
+                  <p>{{lvl3.Name}}</p>
+                </md-list-item>
+              </div>
+            </md-list>
+          </md-list-item>
+        </div>
+      </md-list>
+    </md-list-item>
+  </div>
+  <md-divider>
+    <md-subheader class="md-no-sticky">Tag Cards</md-subheader>
+  </md-divider>
+  <div ng-repeat="item in lbc.simpleSearchMenu">
+    <md-list-item aria-label="Item" ng-click="lc.cardSearch({nodeType: item.nodeType, group: 'alphabet'})" layout-align="center center">
+      <md-icon md-font-icon="fa-{{item.icon}}" class="fa fa-2x"></md-icon>
+      <p>{{item.text}}</p>
+    </md-list-item>
+  </div>
+</md-list>

@@ -1,0 +1,28 @@
+version: "2"
+services:
+  neo4j:
+    build:
+      context: ./neo4j
+    command: bash -c "/var/lib/neo4j/bin/neo4j-shell -path /data/databases/graph.db -file /var/lib/neo4j/import/importQueries.cql; /docker-entrypoint.sh neo4j"
+    ports:
+      - 8476:7474
+      - 7687:7687
+    volumes:
+      - ../neo4j/theLink/data:/data
+      - ../neo4j/theLink/conf:/conf
+  sut:
+    build:
+      context: ./theLinkApi
+      args:
+        - gruntTask=devEnvironment
+    # This is necessary. Don't run the tests until neo4j is up and running.
+    command: bash -c "while ! curl -s neo4j:7474 > /dev/null; do echo waiting for neo4j; sleep 3; done; ./test/run_tests.sh"
+    ports:
+      - 3051:3001
+    links:
+      - neo4j
+    depends_on:
+      - neo4j
+    volumes:
+      - ./theLinkApi/api:/srv/theLinkApi/api
+      - ./theLinkApi/test:/srv/theLinkApi/test

@@ -1,0 +1,40 @@
+<li ng-repeat="card in locations">
+  <md-card flex class="content-card" ng-cloak layout="row">
+    <div class="sideAccent md-primary md-hue-2" hide show-gt-sm md-colors="{background: 'primary-700', color: 'primary-500'}"></div>
+    <md-card-title layout="row" style="flex: initial;">
+      <!-- We don't want it to try to flex. -->
+      <md-card-title-text>
+        <span class="md-headline">
+          <md-button ng-click="click({location:{country: card.country}})">
+            {{card.country}}
+          </md-button>
+        </span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content layout="row" layout-align="center center" layout-padding>
+      <md-input-container flex>
+        <label>Region</label>
+        <md-select ng-model="selectedRegion">
+          <md-option><em>Any</em></md-option>
+          <md-option ng-repeat="region in card.regions" ng-value="region">
+            {{region.region}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container ng-hide="!selectedRegion || selectedRegion == 'None'" flex>
+        <label>City</label>
+        <md-select ng-model="selectedCity">
+          <md-option><em>Any</em></md-option>
+          <md-option ng-repeat="city in selectedRegion.cities" ng-value="city">
+            {{city.city}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container flex>
+        <md-button ng-click="click({location:{country: card.country, region: selectedRegion ? selectedRegion.region : null, city: selectedCity ? selectedCity.city : null}})">
+          Search
+        </md-button>
+      </md-input-container>
+    </md-card-content>
+  </md-card>
+</li>

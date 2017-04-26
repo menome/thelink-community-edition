@@ -1,0 +1,70 @@
+<div ng-controller="DashboardController as dc" ng-cloak>
+  <md-content layout-padding style="overflow-y:scroll;" md-theme="dashboard">
+    <!-- Loading Spinner -->
+    <div ng-show="dc.loading" layout="row" flex layout-padding layout-margin layout-align="space-around">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <md-grid-list ng-show="!dc.loading" md-cols-lg="{{dc.mdColsLg}}" md-cols-md="{{dc.mdColsMd}}" md-cols-sm="{{dc.mdColsSm}}"
+      md-gutter="15px"  md-row-height="2:2.5">
+      <md-grid-tile md-colspan-gt-sm="1" md-rowspan-gt-sm="1" class="card-2">
+        <div style="width:100%;height:100%;overflow:hidden;">
+          <md-grid-tile-header style="position:relative;" md-colors="{background:'primary-500',color:'primary-50' }">
+            <h3>theLink</h3>
+          </md-grid-tile-header>
+          <div layout-margin>
+            <p>Welcome to theLink!</p>
+            <p>This is an easy way to search an navigate through all of your data. To begin, use the left sidebar to start searching! 
+              On this page, you will find a number of useful metrics for checking the state of your data at a glance.</p>
+            <p>If you have feedback, please let us know <a href="https://github.com/menome/thelink-community/issues">by submitting feedback to our GitHub repo.</a></p>
+          </div>
+        </div>
+      </md-grid-tile>
+      <md-grid-tile md-colspan-gt-sm="2" md-rowspan-gt-sm="1" class="card-2">
+        <div style="width:100%;height:100%;overflow:hidden;">
+          <md-grid-tile-header style="position:relative;" md-colors="{background:'primary-500',color:'primary-50' }">
+            <h3>theLink</h3>
+          </md-grid-tile-header>
+            <center>
+              <video  width="560" height="360" controls="controls">
+              <source src="/assets/introvid.mp4" type="video/mp4">
+              </video>
+            </center>
+        </div>
+      </md-grid-tile>
+      <md-grid-tile md-colspan-gt-sm="1" md-rowspan-gt-sm="1" class="card-2">
+        <div style="width:100%;height:100%;overflow:hidden;">
+          <md-grid-tile-header md-color="" style="position:relative;" md-colors="{background:'primary-500',color:'primary-50' }">
+            <h3>Quick Metrics</h3>
+          </md-grid-tile-header>
+          <div layout-margin>
+            <the-link-dashboard-list card="false" pairs="dc.metrics" charlimit="30"></the-link-dashboard-list>
+          </div>
+        </div>
+      </md-grid-tile>
+      <!--<md-grid-tile md-colspan-gt-sm="2" md-rowspan-gt-sm="2" class="card-2">
+        <div style="width:100%;height:100%;overflow:hidden;">
+          <md-grid-tile-header style="position:relative;" md-colors="{background:'primary-500',color:'primary-50' }">
+            <h3>What am I connected to?</h3>
+          </md-grid-tile-header>
+          <div layout-margin style="height:80%">
+            <vis-network data="dc.userPivot.data" events="dc.userPivot.events" options="dc.userPivot.options"></vis-network>
+          </div>
+        </div>
+      </md-grid-tile>-->
+      <md-grid-tile ng-repeat="tile in dc.graphTiles" class="card-2"  md-colspan-gt-sm="{{tile.colspan}}" md-rowspan-gt-sm="{{tile.rowspan}}" >
+        <div style="width:100%;height:100%;overflow:hidden;">
+          <md-grid-tile-header style="position:relative;" md-colors="{background:'primary-500',color:'primary-50' }">
+            <h3>{{tile.title}}</h3>
+          </md-grid-tile-header>
+          <div layout-margin ng-style="{'width': tile.chartType === 'pie' ? '80%' : ''}" style="margin:auto;">
+            <md-content>
+              <canvas id="{{tile.question}}" class="chart chart-base" chart-type="tile.chartType" chart-data="tile.data" chart-labels="tile.labels"
+                chart-series="tile.series" chart-options="tile.options" chart-dataset-override="tile.datasetOverride" chart-click="tile.click">
+              </canvas>
+            </md-content>
+          </div>
+        </div>
+      </md-grid-tile>
+    </md-grid-list>
+  </md-content>
+</div>

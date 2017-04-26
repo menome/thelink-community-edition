@@ -1,0 +1,15 @@
+<ul class="digest-displaypair">
+  <div ng-repeat="pair in pairs">
+    <li ng-hide="!pair.displayVal || pair.displayVal.length < 1 || (card && !pair.onCard)">
+      <b>{{pair.displayName}}:</b> 
+      <span>
+        <!-- If the value is normal. -->
+        <span ng-if="!pair.url">{{pair.displayVal | limitTo:charlimit}}</span>
+        <!-- If the value is a hyperlink. -->
+        <a ng-if="pair.url && !pair.newtab" href="{{pair.url}}" >{{pair.displayVal | limitTo:25}}</a> 
+        <a ng-if="pair.url && pair.newtab" href="{{pair.url}}" target="_blank">{{pair.displayVal | limitTo:25}}</a> 
+        <span ng-if="value.length > charlimit">...</span>
+      </span> 
+    </li>
+  </div> 
+</ul>

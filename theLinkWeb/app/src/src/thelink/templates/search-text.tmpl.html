@@ -1,0 +1,33 @@
+<!--This sidenav list emulates a tree-like structure with a maximum depth of 3 -->
+<md-list ng-show="!lbc.loading">
+  <md-subheader class="md-no-sticky" hide show-gt-sm>Card Explorer: Text</md-subheader>
+  <div ng-repeat="nodeType in lbc.searchMenu">
+    <md-list-item ng-hide="nodeType.textChildren.length<1" aria-label="item" ng-click="nodeType.textExpanded = !nodeType.textExpanded"
+      layout-align="center center">
+      <md-icon aria-label="Item" md-font-icon="fa-{{nodeType.textExpanded ? 'caret-down' : 'caret-right'}}" class="md-secondary-container fa fa-1x"></md-icon>
+      <md-icon md-font-icon="fa-{{nodeType.icon}}" class="fa fa-2x"></md-icon>
+      <p>&nbsp;&nbsp;&nbsp;{{nodeType.name}}</p>
+    </md-list-item>
+    <form ng-submit="lc.cardSearch(lbc.genFields(lbc.textSearchFields[nodeType.api], nodeType.nodeType))">
+      <md-list-item ng-show="nodeType.textExpanded" class="subnav" aria-label="item">
+        <md-list class="sublist">
+          <md-list-item style="min-height:32px;" ng-repeat="field in nodeType.textChildren" aria-label="item">
+            <input class="nodeSearchInput" placeholder="{{field.displayName}}" aria-label="{{field.displayName}}" md-no-autogrow ng-model="lbc.textSearchFields[nodeType.api][field.name]"
+            />
+            <md-divider></md-divider>
+          </md-list-item>
+          <md-list-item>
+            <md-button type="submit">
+              Search
+            </md-button>
+          </md-list-item>
+        </md-list>
+      </md-list-item>
+      <form>
+  </div>
+  <md-divider></md-divider>
+  <md-list-item ng-click="lbc.clearSearchFields()">
+    <md-icon md-font-icon="fa-circle-o" class="fa fa-2x"></md-icon>
+    <p>Clear Search Parameters</p>
+  </md-list-item>
+</md-list>

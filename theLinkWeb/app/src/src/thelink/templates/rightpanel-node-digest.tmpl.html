@@ -1,0 +1,13 @@
+<md-content layout-padding layout="column">
+  <md-content layout="column">
+    <md-content layout-padding>
+      <the-link-display-pair-list card="false" pairs="card.displayInfo.DisplayPairs" charlimit="10000"></the-link-display-pair-list>
+    </md-content>
+    <p>{{card.displayInfo.Summary}}</p>
+    <div marked="card.displayInfo.MarkdownContent"></div>
+  </md-content>
+  <md-button ng-show="card.displayInfo.Source.length >= 1" aria-label="" ng-href="{{card.displayInfo.Source}}" target="_blank"
+    class="md-primary">
+    View Source
+  </md-button>
+</md-content>

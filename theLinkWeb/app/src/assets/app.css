@@ -1,0 +1,256 @@
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size:14px;
+  height:100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+/****************/
+/* Main Content */
+/****************/
+ul.content-cardlist {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+ul.content-cardlist md-card {
+  max-height: 230px;
+  overflow: hidden;
+}
+
+.content-messages {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */
+  cursor:default;
+  color: grey;
+  text-align: center;
+  font-size:24px;
+}
+
+.content-messages .fa {
+  color: grey;
+  font-size: 6em;
+  height: auto;
+  line-height: normal;
+}
+
+.searchfilter-bar {
+  padding: 3px;
+  min-height: 54px;
+  font-size: 1em;
+  overflow: auto;
+}
+.search-map {
+  padding: 3px;
+  height: 100%;
+  width:100%;
+}
+
+.breadcrumb-bar {
+  padding: 1px;
+  font-size: .9em;
+  overflow: auto;
+  height: 17px;
+  padding-left: 5px;
+  line-height: 17px;
+}
+.breadcrumb-bar-text {
+  font-size: .9em;
+   height: 15px;
+   line-height: 15px;
+   vertical-align: middle;
+   color: #ffffff;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+}
+
+.loading-throbber.ng-hide-add, .subnav.ng-hide-remove {
+  /* this is required as of 1.3x to properly
+   *      apply all styling in a show/hide animation */
+  transition: 0.5s linear all;
+}
+
+.loading-throbber.ng-hide-add-active, .subnav.ng-hide-remove-active {
+  /* the transition is defined in the active class */
+  transition: 0.5s linear all;
+}
+
+.loading-throbber.ng-hide {
+  height: 0px;
+  opacity: 0;
+}
+
+.content-card {
+  border-radius: 10px;
+}
+
+.digest-displaypair {
+  list-style-type: none;
+  color: gray;
+  margin: 0px;
+  padding-left: 0px;
+}
+
+.digest-displaypair a:link, .digest-displaypair a:visited {
+  color: gray;
+}
+
+/* This is for the drag and drop items, to calculate mouse positions */
+ul[dnd-list], ul[dnd-list] > li {
+  position: relative;
+}
+
+ul[dnd-list] .dndPlaceholder {
+  display: block;
+  min-height: 42px;
+}
+
+/****************/
+/* Toolbar area */
+/****************/
+md-toolbar h1 {
+  margin: auto;
+  font-size: 1.250em;
+  font-weight: 400;
+}
+
+.md-button.topbar-button {
+  min-width: 55px;
+  min-height: 45px;
+}
+
+.topbar-sidebar {
+  width:320px;
+  max-width:320px;
+}
+
+.topAccent {
+  min-height: 16px;
+  font-size: 1.2em;
+  padding-left: 5px;
+}
+
+.topAccentDialog {
+  min-height: 77px;
+  font-size: 1.2em;
+  padding-left: 5px;
+}
+
+.sideAccent {
+  min-width: 4px;
+  font-size: 1.2em;
+}
+
+.button-selected {
+  background: rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 15%;
+}
+
+
+/****************/
+/* Sidenav area */
+/****************/
+
+.subnav {
+  align-items: left;
+}
+
+.sublist {
+  width: 100%;
+}
+
+.subnav.ng-hide-add, .subnav.ng-hide-remove {
+  /* this is required as of 1.3x to properly
+   *      apply all styling in a show/hide animation */
+  transition: 0.2s linear all;
+}
+
+.subnav.ng-hide-add-active, .subnav.ng-hide-remove-active {
+  /* the transition is defined in the active class */
+  transition: 0.2s linear all;
+}
+
+.subnav.ng-hide {
+  height: 0px;
+  line-height: 0;
+  opacity: 0;
+}
+
+.nodeSearchInput { border: 0px; }
+
+md-list .md-button {
+  color: inherit;
+  font-weight: 500;
+  text-align: left;
+  width: 100%;
+}
+
+span.name {
+  font-weight: bold;
+  font-size:1.1em;
+  padding-left:5px;
+}
+
+/*****************************/
+/* Login/Register Page Stuff */
+/*****************************/
+#login-card {
+  max-width: 700px;
+  min-width: 320px;
+}
+
+.eula-box {
+  max-width: 600px;
+  max-height: 100px;
+  overflow: auto;
+  overflow-y: scroll;
+  color: #444444;
+  background-color: #DDDDDD;
+}
+
+/*****************************/
+/* Dashboard card styles */
+/*****************************/
+
+.card {
+  background: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  height: 300px;
+  margin: 1rem;
+  position: relative;
+  width: 300px;
+}
+
+.card-1 {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.card-1:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.card-2 {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.card-3 {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.card-4 {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.card-5 {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+

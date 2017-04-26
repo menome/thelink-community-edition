@@ -1,0 +1,12 @@
+CompanyId,Name,Code,Website,Phone,Fax,Email,ImageUrl
+022c19b0-42ba-11e6-beb8-9e71128cae77,Xerox,1,,,,,
+022c1d20-42ba-11e6-beb8-9e71128cae77,Chapman University,2,,,,,
+022c1e38-42ba-11e6-beb8-9e71128cae77,Cern,3,,,,,
+022c1f14-42ba-11e6-beb8-9e71128cae77,US Government,4,,,,,
+022c1ff0-42ba-11e6-beb8-9e71128cae77,Menome,5,http://www.menome.com,,,,
+022c26bc-42ba-11e6-beb8-9e71128cae77,Oxford,6,,,,,
+304198ac-42ba-11e6-beb8-9e71128cae77,Englebart Institute,7,,,,,
+fea2e832-64c9-11e6-8b77-86f30ca893d3,Frog Design,8,http://www.frogdesign.ca,,,,
+fea2ecd8-64c9-11e6-8b77-86f30ca893d3,Phredq Associates,9,http://www.phredq.com,,,,
+fea2ef8a-64c9-11e6-8b77-86f30ca893d3,Inspired Engineering,10,http://www.inspired.com,,,,
+fea2f23c-64c9-11e6-8b77-86f30ca893d3,Innovative solutions,11,http://www.innovative.com,,,,

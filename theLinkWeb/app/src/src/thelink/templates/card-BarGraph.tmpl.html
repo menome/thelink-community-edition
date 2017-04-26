@@ -1,0 +1,30 @@
+<md-card flex class="content-card" ng-cloak layout="row">
+  <div class="sideAccent md-primary md-hue-2" md-colors="{background: 'primary-700', color: 'primary-500'}"></div>
+  <!-- Main content. Contains title and summary, or title and some bullet point facts -->
+  <md-card-content layout="row" flex>
+    <div layout="column" layout-align="start start" flex>
+      <div>
+        <b ng-click="select({item:card})">{{card.displayInfo.Name}}</b>
+      </div>
+      <div hide show-gt-xs style="overflow: hidden;">
+        <p>{{card.displayInfo.Summary | limitTo:200 }}<span ng-if="card.displayInfo.Summary.length > 200">...</span></p>
+      </div>
+      <div hide-gt-xs style="overflow: hidden;">
+        <the-link-display-pair-list card="true" pairs="card.displayInfo.DisplayPairs" charlimit="25"></the-link-display-pair-list>
+      </div>
+    </div>
+    <!-- Contains some bullet point facts about the item -->
+    <div layout-align="center center" style="min-width:35%" hide show-gt-xs>
+      <the-link-display-pair-list card="true" pairs="card.displayInfo.DisplayPairs" charlimit="25"></the-link-display-pair-list>
+    </div>
+  </md-card-content>
+  <!-- Information Button -->
+  <md-card-content layout-padding>
+    <md-card-actions layout="column" layout-align="center center" style="height: 100%;margin:0px;">
+      <md-button ng-click="select({item: card})" style="height:75%" aria-label="Card" title="View Card" class="md-icon-button"
+        layout="row" layout-align="center center">
+        <md-icon md-font-icon="fa-info" class="fa fa-4x"></md-icon>
+      </md-button>
+    </md-card-actions>
+  </md-card-content>
+</md-card>

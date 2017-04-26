@@ -1,0 +1,1 @@
+docker exec thelink_neo4j_1 /var/lib/neo4j/bin/neo4j-shell -file /var/lib/neo4j/import/movieSample/generateTimeTree.cql

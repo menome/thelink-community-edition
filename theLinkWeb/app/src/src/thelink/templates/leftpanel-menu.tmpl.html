@@ -1,0 +1,61 @@
+<!--This sidenav list emulates a tree-like structure with a maximum depth of 3 -->
+<md-list>
+  <md-subheader class="md-no-sticky">Explorer</md-subheader>
+  <md-list-item ng-click="lc.setSearchMode('search-list')" layout-align="center center" aria-label="List Search">
+    <md-icon md-font-icon="fa-tasks" class="fa fa-2x"></md-icon>
+    <p>Card Explorer: List</p>
+  </md-list-item>
+  <md-list-item ng-click="lc.setSearchMode('search-text')" layout-align="center center" aria-label="Text Search">
+    <md-icon md-font-icon="fa-search" class="fa fa-2x"></md-icon>
+    <p>Card Explorer: Text</p>
+  </md-list-item>
+  <md-list-item ng-click="lc.setSearchMode('search-map')" aria-label="Map Search" layout-align="center center">
+    <md-icon md-font-icon="fa-globe" class="fa fa-2x"></md-icon>
+    <p>Card Explorer: Map</p>
+  </md-list-item>
+  <md-list-item ng-click="lc.setSearchMode('home')" aria-label="Home" layout-align="center center" ng-hide="lc.items.length < 1">
+    <md-icon md-font-icon="fa-circle-o" class="fa fa-2x"></md-icon>
+    <p>Clear Results</p>
+  </md-list-item>
+  <form ng-submit="lc.fullTextSearch(lc.fullText)">
+    <md-list-item layout="row">
+      &nbsp;<input placeholder="Full Text Search" aria-label="Full Text Search" md-no-autogrow ng-model="lc.fullText" />
+      <md-button type="submit" class="md-primary md-hue-2 topbar-button">
+        Find
+      </md-button>
+    </md-list-item>
+  </form>
+  <!--
+  <md-subheader class="md-no-sticky">Card Options</md-subheader>
+  <md-list-item ng-click="null" layout-align="center center">
+    <md-icon md-font-icon="fa-th-large" class="fa fa-2x"></md-icon>
+    <p>Grid View</p>
+  </md-list-item>
+
+  <md-list-item ng-click="null" layout-align="center center">
+    <md-icon md-font-icon="fa-calendar" class="fa fa-2x"></md-icon>
+    <p>Calendar View</p>
+  </md-list-item>
+
+  <md-list-item ng-click="null" layout-align="center center">
+    <md-icon md-font-icon="fa-globe" class="fa fa-2x"></md-icon>
+    <p>Map View</p>
+  </md-list-item>
+  -->
+  <md-subheader class="md-no-sticky">App Modes</md-subheader>
+  <md-list-item ng-show="lc.appMode != 'link'" ng-disabled="!lc.canContribute" ng-click="lc.switchMode('link')" layout-align="center center">
+    <md-icon md-svg-icon="menome" ng-style="{'opacity': lc.canContribute ? '0.7' : '0.2'}"></md-icon>
+    <p>Change to Link Mode</p>
+  </md-list-item>
+  <md-list-item ng-show="lc.appMode != 'info'" ng-click="lc.switchMode('info')" layout-align="center center">
+    <md-icon md-font-icon="fa-info-circle" class="fa fa-2x"></md-icon>
+    <p>Change to Info Mode</p>
+  </md-list-item>
+  <md-subheader class="md-no-sticky">Create Nodes</md-subheader>
+  <div ng-repeat="item in lc.creationDialogues">
+    <md-list-item ng-click="item.dialog($event)">
+      <md-icon md-font-icon="fa-{{item.node.icon}}" class="fa fa-2x"></md-icon>
+      <p>{{item.name}}</p>
+    </md-list-item>
+  </div>
+</md-list>
