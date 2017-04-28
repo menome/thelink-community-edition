@@ -68,9 +68,9 @@
 
     mapService.boundsChangeTimer = 500; //time in ms, that will reset if next 'bounds_changed' call is send, otherwise code will be executed after that time is up
     mapService.firstTimeMapOpened = true;
-    mapService.defaultZoom = 4,
-      mapService.defaultMapCenterLat = 53,
-      mapService.defaultMapCenterLong = -107,
+    mapService.defaultZoom = 14,
+      mapService.defaultMapCenterLat = 50.67448797148436,
+      mapService.defaultMapCenterLong = -114.28356170654297,
 
       // Map initizalziation function : TODO : See if this can be refactored/moved to services
       self.initializeMap = function () {

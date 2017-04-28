@@ -383,7 +383,7 @@ Person: {
     }
   },
   Spill: {
-    icon: "trash-o",
+    icon: "sun-o",
     text: "Spill Incidents",
     api: "spills",
     getDisplayName: function (card) {
