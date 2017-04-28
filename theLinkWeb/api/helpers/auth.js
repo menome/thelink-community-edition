@@ -2,12 +2,9 @@
 //Authentication
 var BasicStrategy = require('passport-http').BasicStrategy;
 var LocalStrategy = require('passport-local').Strategy;
-var JwtStrategy = require('passport-jwt').Strategy;
-var ExtractJwt = require('passport-jwt').ExtractJwt;
 var bcrypt = require('bcryptjs');
 var passport = require("passport");
 var bcrypt = require('bcryptjs');
-var jwt = require('jwt-simple');
 var conf = require('../../config/conf');
 var db = require('../helpers/database');
 var stat = require('../helpers/stat');
@@ -139,29 +136,11 @@ var authFunc = function (username, password, done) {
 passport.use(new BasicStrategy(authFunc));
 passport.use(new LocalStrategy(authFunc));
 
-// We can also user JWT tokens, which is more secure and better from a webapp perspective.
-var opts = {
-  secretOrKey: conf.secret,
-  jwtFromRequest: ExtractJwt.fromAuthHeader()
-};
-passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
-  db.getUserAndRolesByEmail(jwt_payload.Email, function (err, user) {
-    if (err) {
-      return done(err, false);
-    }
-    if (!user) {
-      return done(null, false);
-    }
-
-    return done(null, user);
-  });
-}));
-
 // Route Middleware. Gives HTTP unauthorized on fail.
 // Use sessions if we're also running a webapp.
 
 // We use this middleware for stateless auth.
-var statelessAuth = passport.authenticate(['basic', 'jwt']);
+var statelessAuth = passport.authenticate(['basic']);
 
 // This one just checks that we're already logged in.
 var statefulAuth = function (req, res, next) {
