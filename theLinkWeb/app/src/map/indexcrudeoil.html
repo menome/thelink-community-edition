@@ -82,7 +82,7 @@
       //var baseLayer = L.tileLayer('https://{s}.aerial.maps.cit.api.here.com/maptile/2.1/maptile/maptile/hybrid.day/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}&lg={language}', { attribution: '<a target=_blank href="http://osm.org/copyright">OpenStreetMap</a> | Data From <a target=_blank href="https://offshoreleaks.icij.org/pages/database">Edmonton Open Data Portal</a>', minZoom: 2, maxZoom: 18});
      
       var markerLayers = new L.MarkerClusterGroup();
-      var heatmap = new L.TileLayer.HeatCanvas({}, {'step':2, 'degree': HeatCanvas.LINEAR, 'opacity': 0.7});
+      var heatmap = new L.TileLayer.HeatCanvas({}, {'step':.1, 'degree': HeatCanvas.LINEAR, 'opacity': 0.7});
 
       //var markerLayers = new L.LayerGroup();
       //var markerLayers = new L.MarkerClusterGroup();
@@ -91,9 +91,9 @@
       var session = driver.session();
       session
         .run(`MATCH  (sr:SubstanceReleased {Name:'Crude Oil'})<-[SubstanceReleased]-(a:Spill)-[sn:SPILL_NEAR_WELL]->(o:Well)-[:LICENSEE_OF]->(e:Licensee)
-                      WHERE exists(a.Latitude) and exists(a.Longitude)
-                      WITH a, COLLECT(DISTINCT o)[0..5] AS wells, COLLECT(DISTINCT e)[0..5] AS entities, COLLECT(DISTINCT sr.Name)[0..5] AS substance, sum(a.VolumeReleased) AS strength
-                      RETURN a.EnvironmentAffected AS spill, a.Latitude AS latitude, a.Longitude AS longitude, [x IN wells | x.Name] as wells, [x IN entities | x.FullName] as licensees, substance, strength`)
+        WHERE exists(a.Latitude) and exists(a.Longitude)
+        WITH a, COLLECT(DISTINCT o)[0..5] AS wells, COLLECT(DISTINCT e)[0..5] AS entities, COLLECT(DISTINCT sr.Name)[0..5] AS substance, sum(a.VolumeReleased) AS strength
+        RETURN a.EnvironmentAffected AS spill, a.Latitude AS latitude, a.Longitude AS longitude, [x IN wells | x.Name] as wells, [x IN entities | x.FullName] as licensees, substance, strength, a.IncidentDate as incidentdate,a.ReleaseCleanupDate as cleanupdate`)
 
       
 
@@ -101,7 +101,10 @@
           onNext: function (record) {
             //console.log(record);
             var marker = new L.Marker(new L.LatLng(record.get('latitude'), record.get('longitude')));
-            marker.bindPopup('<b>Spill</b> ' + record.get('spill') + '<br>' + '<b>Wells: </b>' + record.get('wells').toString() + '<br><b>Licensees:</b> ' + record.get('licensees').toString() + '<br><b>Substance Released: </b> ' + record.get('substance').toString());
+            marker.bindPopup('<b>Spill</b> ' + record.get('spill') + '<br>' + '<b>Wells: </b>' + record.get('wells').toString() + '<br><b>Licensees:</b> ' + record.get('licensees').toString() + '<br><b>Substance Released: </b> ' + record.get('substance').toString()
+            + '<br><b>Date Released: </b> ' + record.get('incidentdate').toString()
+            + '<br><b>Date Cleanup: </b> ' + record.get('cleanupdate').toString()
+            );
             markerLayers.addLayer(marker);
             heatmap.pushData(record.get('latitude'), record.get('longitude'), record.get('strength')*0.01);
           },
