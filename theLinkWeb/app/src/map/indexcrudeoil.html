@@ -82,7 +82,7 @@
       //var baseLayer = L.tileLayer('https://{s}.aerial.maps.cit.api.here.com/maptile/2.1/maptile/maptile/hybrid.day/{z}/{x}/{y}/256/png8?app_id={app_id}&app_code={app_code}&lg={language}', { attribution: '<a target=_blank href="http://osm.org/copyright">OpenStreetMap</a> | Data From <a target=_blank href="https://offshoreleaks.icij.org/pages/database">Edmonton Open Data Portal</a>', minZoom: 2, maxZoom: 18});
      
       var markerLayers = new L.MarkerClusterGroup();
-      var heatmap = new L.TileLayer.HeatCanvas({}, {'step':0.3, 'degree': HeatCanvas.CUBIC, 'opacity': 0.7});
+      var heatmap = new L.TileLayer.HeatCanvas({}, {'step':0.8, 'degree': HeatCanvas.LINEAR, 'opacity': 0.7});
 
       //var markerLayers = new L.LayerGroup();
       //var markerLayers = new L.MarkerClusterGroup();
