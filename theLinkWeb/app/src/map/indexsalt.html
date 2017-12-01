@@ -101,7 +101,7 @@
           onNext: function (record) {
             //console.log(record);
             var marker = new L.Marker(new L.LatLng(record.get('latitude'), record.get('longitude')));
-            marker.bindPopup('<b>Spill</b> ' + record.get('spill') + '<br>' + '<b>Wells: </b>' + record.get('wells').toString() + '<br><b>Licensees:</b> ' + record.get('licensees').toString() + '<br><b>Substance Released: </b> ' + record.get('substance').toString()); + '<br><b>Date Released: </b> ' + record.get('incidentdate').toString()+ '<br><b>Date Cleanup: </b> ' + record.get('cleanupdate').toString());
+            marker.bindPopup('<b>Spill</b> ' + record.get('spill') + '<br>' + '<b>Wells: </b>' + record.get('wells').toString() + '<br><b>Licensees:</b> ' + record.get('licensees').toString() + '<br><b>Substance Released: </b> ' + record.get('substance').toString());// + '<br><b>Date Released: </b> ' + record.get('incidentdate').toString()+ '<br><b>Date Cleanup: </b> ' + record.get('cleanupdate').toString());
             
             markerLayers.addLayer(marker);
             heatmap.pushData(record.get('latitude'), record.get('longitude'), record.get('strength')*0.01);
