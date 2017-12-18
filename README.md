@@ -1,3 +1,5 @@
+> **Important:** This version of theLink runs a severely outdated codebase. It has been deprecated, and support has been dropped. You are free to explore and hack on all the code, but nothing is guaranteed to work, and it is in no way a reflection of our current product.
+
 # Welcome to -->theLink<--
 
 ![menomelogo](documentation/images/menomelogo.png)
